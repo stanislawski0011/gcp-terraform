@@ -7,10 +7,14 @@ resource "google_sql_database_instance" "postgres" {
   settings {
     tier = var.db_tier
 
+    availability_type = var.environment == "prod" ? "REGIONAL" : "ZONAL"
+
     backup_configuration {
       enabled                        = true
       point_in_time_recovery_enabled = true
       start_time                     = "02:00"
+      location                       = var.region
+      transaction_log_retention_days = 7
     }
 
     ip_configuration {
@@ -21,6 +25,13 @@ resource "google_sql_database_instance" "postgres" {
       day          = 7
       hour         = 3
       update_track = "stable"
+    }
+
+    insights_config {
+      query_insights_enabled = true
+      query_string_length    = 1024
+      record_application_tags = true
+      record_client_address  = true
     }
   }
 

@@ -1,0 +1,46 @@
+# Copy this entire block into the new file
+
+name: 'Terraform CI'
+
+on:
+  pull_request:
+    branches:
+      - scan
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+
+jobs:
+  # Job to check for proper Terraform formatting
+  format:
+    name: 'Terraform Format'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - name: 'Set up Terraform'
+        uses: hashicorp/setup-terraform@v3
+
+      - name: 'Terraform Fmt Check'
+        run: terraform fmt -check -recursive
+
+  # Job to scan for security vulnerabilities with Checkov
+  security-scan:
+    name: 'Checkov Security Scan'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - name: 'Set up Python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 'Run Checkov action'
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: ./
+          framework: terraform
+          soft_fail: false

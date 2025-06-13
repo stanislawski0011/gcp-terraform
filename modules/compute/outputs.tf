@@ -1,6 +1,6 @@
 output "instance_group_id" {
   description = "The ID of the instance group"
-  value       = google_compute_instance_group_manager.web_group.id
+  value       = google_compute_instance_group_manager.web_group.instance_group
 }
 
 output "instance_group_name" {

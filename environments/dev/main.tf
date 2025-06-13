@@ -11,7 +11,7 @@ provider "google-beta" {
 module "networking" {
   source = "../../modules/networking"
 
-  project_id           = var.project_id
+  project_id          = var.project_id
   region              = var.region
   environment         = var.environment
   vpc_cidr            = var.vpc_cidr
@@ -22,12 +22,12 @@ module "networking" {
 module "compute" {
   source = "../../modules/compute"
 
-  project_id      = var.project_id
-  region          = var.region
-  environment     = var.environment
-  machine_type    = var.machine_type
-  instance_count  = var.instance_count
-  subnet_id       = module.networking.public_subnet_id
+  project_id     = var.project_id
+  region         = var.region
+  environment    = var.environment
+  machine_type   = var.machine_type
+  instance_count = var.instance_count
+  subnet_id      = module.networking.public_subnet_id
 }
 
 module "database" {
@@ -47,10 +47,10 @@ module "database" {
 module "storage" {
   source = "../../modules/storage"
 
-  project_id           = var.project_id
-  region              = var.region
-  environment         = var.environment
-  bucket_name         = var.storage_bucket_name
+  project_id            = var.project_id
+  region                = var.region
+  environment           = var.environment
+  bucket_name           = var.storage_bucket_name
   service_account_email = var.service_account_email
 }
 

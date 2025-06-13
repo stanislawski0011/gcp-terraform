@@ -5,7 +5,7 @@ resource "google_compute_global_address" "default" {
 
 resource "google_compute_health_check" "http_health_check" {
   name               = "${var.environment}-http-health-check"
-  check_interval_sec = 30  # Increased to reduce costs
+  check_interval_sec = 30 # Increased to reduce costs
   timeout_sec        = 5
   project            = var.project_id
 

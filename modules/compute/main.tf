@@ -7,7 +7,7 @@ resource "google_compute_instance_template" "web_template" {
     source_image = "debian-cloud/debian-11"
     auto_delete  = true
     boot         = true
-    disk_size_gb = 10  # Free tier limit
+    disk_size_gb = 10 # Free tier limit
   }
 
   network_interface {
@@ -80,8 +80,8 @@ resource "google_compute_autoscaler" "web_autoscaler" {
   target  = google_compute_instance_group_manager.web_group.id
 
   autoscaling_policy {
-    max_replicas    = 2  # Maximum 2 instances (free tier limit)
-    min_replicas    = 1  # Minimum 1 instance
+    max_replicas    = 2 # Maximum 2 instances (free tier limit)
+    min_replicas    = 1 # Minimum 1 instance
     cooldown_period = 60
 
     cpu_utilization {

@@ -1,3 +1,12 @@
+# Enable Secret Manager API
+resource "google_project_service" "secretmanager" {
+  project = var.project_id
+  service = "secretmanager.googleapis.com"
+
+  disable_dependent_services = false
+  disable_on_destroy         = false
+}
+
 resource "google_sql_database_instance" "postgres" {
   name             = var.db_instance_name
   database_version = "POSTGRES_14"
@@ -28,10 +37,10 @@ resource "google_sql_database_instance" "postgres" {
     }
 
     insights_config {
-      query_insights_enabled = true
-      query_string_length    = 1024
+      query_insights_enabled  = true
+      query_string_length     = 1024
       record_application_tags = true
-      record_client_address  = true
+      record_client_address   = true
     }
   }
 
@@ -52,6 +61,8 @@ resource "google_sql_user" "user" {
 }
 
 resource "google_secret_manager_secret" "db_password" {
+  depends_on = [google_project_service.secretmanager]
+
   secret_id = "db-password"
   replication {
     user_managed {

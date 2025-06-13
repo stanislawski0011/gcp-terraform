@@ -39,7 +39,7 @@ variable "db_password" {
   sensitive   = true
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC"
+variable "vpc_network_id" {
+  description = "The ID of the VPC network for the database instance"
   type        = string
 }

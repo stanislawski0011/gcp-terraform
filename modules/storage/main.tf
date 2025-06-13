@@ -85,14 +85,8 @@ resource "google_kms_crypto_key" "bucket_key" {
   }
 }
 
-resource "google_storage_bucket_iam_member" "public_read" {
+resource "google_storage_bucket_iam_member" "service_account_access" {
   bucket = google_storage_bucket.web_storage.name
   role   = "roles/storage.objectViewer"
-  member = "allUsers"
-}
-
-resource "google_storage_bucket_iam_member" "service_account_write" {
-  bucket = google_storage_bucket.web_storage.name
-  role   = "roles/storage.objectViewer"
-  member = "user:${var.service_account_email}"
+  member = "serviceAccount:${var.service_account_email}"
 }

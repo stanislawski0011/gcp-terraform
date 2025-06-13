@@ -41,7 +41,7 @@ module "database" {
   db_name          = var.db_name
   db_user          = var.db_user
   db_password      = var.db_password
-  vpc_id           = module.networking.vpc_id
+  vpc_network_id   = module.networking.vpc_id
 }
 
 module "storage" {

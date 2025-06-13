@@ -27,7 +27,10 @@ resource "google_sql_database_instance" "postgres" {
     }
 
     ip_configuration {
-      ipv4_enabled = false
+      ipv4_enabled                                  = false
+      private_network                               = var.vpc_network_id
+      enable_private_path_for_google_cloud_services = true
+      ssl_mode                                      = "ENCRYPTED_ONLY"
     }
 
     maintenance_window {
@@ -43,7 +46,14 @@ resource "google_sql_database_instance" "postgres" {
       record_client_address   = true
     }
 
-    # Add database flags for security
+    database_flags {
+      name  = "pgaudit.log"
+      value = "all"
+    }
+    database_flags {
+      name  = "pgaudit.role"
+      value = "rdsadmin"
+    }
     database_flags {
       name  = "log_checkpoints"
       value = "on"
@@ -54,10 +64,6 @@ resource "google_sql_database_instance" "postgres" {
     }
     database_flags {
       name  = "log_statement"
-      value = "all"
-    }
-    database_flags {
-      name  = "pgaudit.log"
       value = "all"
     }
     database_flags {

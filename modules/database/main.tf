@@ -9,7 +9,7 @@ resource "google_project_service" "secretmanager" {
 
 resource "google_sql_database_instance" "postgres" {
   name             = var.db_instance_name
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_15"
   region           = var.region
   project          = var.project_id
 
@@ -41,6 +41,23 @@ resource "google_sql_database_instance" "postgres" {
       query_string_length     = 1024
       record_application_tags = true
       record_client_address   = true
+    }
+
+    database_flags {
+      name  = "log_checkpoints"
+      value = "on"
+    }
+    database_flags {
+      name  = "log_lock_waits"
+      value = "on"
+    }
+    database_flags {
+      name  = "log_statement"
+      value = "all"
+    }
+    database_flags {
+      name  = "pgaudit.log"
+      value = "all"
     }
   }
 

@@ -12,9 +12,6 @@ resource "google_compute_instance_template" "web_template" {
 
   network_interface {
     subnetwork = var.subnet_id
-    access_config {
-      // Ephemeral public IP
-    }
   }
 
   metadata = {
@@ -28,6 +25,13 @@ resource "google_compute_instance_template" "web_template" {
   }
 
   tags = ["http-server", "https-server"]
+
+  # Enable Shielded VM
+  shielded_instance_config {
+    enable_secure_boot          = true
+    enable_vtpm                 = true
+    enable_integrity_monitoring = true
+  }
 
   lifecycle {
     create_before_destroy = true

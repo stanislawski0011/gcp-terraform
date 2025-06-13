@@ -1,6 +1,6 @@
 output "load_balancer_ip" {
   description = "The IP address of the load balancer"
-  value       = module.loadbalancer.ip_address
+  value       = module.loadbalancer.load_balancer_ip
 }
 
 output "database_connection_name" {

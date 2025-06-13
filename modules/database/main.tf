@@ -14,11 +14,7 @@ resource "google_sql_database_instance" "postgres" {
     }
 
     ip_configuration {
-      ipv4_enabled                                  = false
-      private_network                               = var.vpc_id
-      require_ssl                                   = true
-      ssl_mode                                      = "ENCRYPTED_ONLY"
-      enable_private_path_for_google_cloud_services = true
+      ipv4_enabled = true
     }
 
     maintenance_window {
@@ -45,11 +41,13 @@ resource "google_sql_user" "user" {
 }
 
 resource "google_secret_manager_secret" "db_password" {
-  secret_id = "${var.environment}-db-password"
-  project   = var.project_id
-
+  secret_id = "db-password"
   replication {
-    automatic = true
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
   }
 }
 

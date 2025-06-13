@@ -60,5 +60,4 @@ module "loadbalancer" {
   project_id        = var.project_id
   environment       = var.environment
   instance_group_id = module.compute.instance_group_id
-  domain_name       = var.domain_name
 }

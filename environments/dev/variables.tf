@@ -4,15 +4,13 @@ variable "project_id" {
 }
 
 variable "region" {
-  description = "The GCP region to deploy resources"
+  description = "The GCP region"
   type        = string
-  default     = "us-central1"
 }
 
 variable "environment" {
-  description = "Environment (dev/prod)"
+  description = "Environment name"
   type        = string
-  default     = "dev"
 }
 
 variable "vpc_cidr" {
@@ -82,10 +80,5 @@ variable "storage_bucket_name" {
 
 variable "service_account_email" {
   description = "Email of the service account that will write to the bucket"
-  type        = string
-}
-
-variable "domain_name" {
-  description = "Domain name for the application"
   type        = string
 }

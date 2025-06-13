@@ -5,7 +5,7 @@ name: 'Terraform CI'
 on:
   pull_request:
     branches:
-      - scan
+      - main
     paths:
       - '**.tf'
       - '**.tfvars'

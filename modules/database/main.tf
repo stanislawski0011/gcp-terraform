@@ -27,7 +27,7 @@ resource "google_sql_database_instance" "postgres" {
     }
 
     ip_configuration {
-      ipv4_enabled = true
+      ipv4_enabled = false
     }
 
     maintenance_window {
@@ -43,6 +43,7 @@ resource "google_sql_database_instance" "postgres" {
       record_client_address   = true
     }
 
+    # Add database flags for security
     database_flags {
       name  = "log_checkpoints"
       value = "on"
@@ -58,6 +59,26 @@ resource "google_sql_database_instance" "postgres" {
     database_flags {
       name  = "pgaudit.log"
       value = "all"
+    }
+    database_flags {
+      name  = "log_connections"
+      value = "on"
+    }
+    database_flags {
+      name  = "log_disconnections"
+      value = "on"
+    }
+    database_flags {
+      name  = "log_hostname"
+      value = "on"
+    }
+    database_flags {
+      name  = "log_duration"
+      value = "on"
+    }
+    database_flags {
+      name  = "log_min_error_statement"
+      value = "error"
     }
   }
 

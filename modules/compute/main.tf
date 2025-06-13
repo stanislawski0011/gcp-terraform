@@ -22,6 +22,7 @@ resource "google_compute_instance_template" "web_template" {
       systemctl start nginx
       systemctl enable nginx
     SCRIPT
+    block-project-ssh-keys = "TRUE"
   }
 
   tags = ["http-server", "https-server"]

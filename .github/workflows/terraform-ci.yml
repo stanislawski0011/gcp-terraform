@@ -11,7 +11,7 @@ on:
       - '**.tfvars'
 
 jobs:
-  # Job to check for proper Terraform formatting
+  # Job to check for proper Terraform formatting#
   format:
     name: 'Terraform Format'
     runs-on: ubuntu-latest

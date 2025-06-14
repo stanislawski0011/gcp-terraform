@@ -16,18 +16,11 @@ resource "google_project_service" "servicenetworking" {
   disable_on_destroy        = false
 }
 
-resource "time_sleep" "wait_for_private_services" {
-  depends_on = [google_project_service.servicenetworking]
-  create_duration = "2m"
-}
-
 resource "google_sql_database_instance" "postgres" {
   name             = var.db_instance_name
   database_version = "POSTGRES_15"
   region           = var.region
   project          = var.project_id
-
-  depends_on = [time_sleep.wait_for_private_services]
 
   settings {
     tier = var.db_tier
@@ -36,17 +29,14 @@ resource "google_sql_database_instance" "postgres" {
 
     backup_configuration {
       enabled                        = true
-      point_in_time_recovery_enabled = false
+      point_in_time_recovery_enabled = true
       start_time                     = "02:00"
-      location                       = var.region
-      transaction_log_retention_days = 1
     }
 
     ip_configuration {
-      ipv4_enabled                                  = false
+      ipv4_enabled                                  = true
       private_network                               = var.vpc_network_id
       enable_private_path_for_google_cloud_services = true
-      ssl_mode                                      = "ENCRYPTED_ONLY"
     }
 
     maintenance_window {
@@ -60,39 +50,6 @@ resource "google_sql_database_instance" "postgres" {
       query_string_length     = 1024
       record_application_tags = false
       record_client_address   = false
-    }
-
-    database_flags {
-      name  = "log_checkpoints"
-      value = "off"
-    }
-    database_flags {
-      name  = "log_lock_waits"
-      value = "off"
-    }
-    database_flags {
-      name  = "log_statement"
-      value = "none"
-    }
-    database_flags {
-      name  = "log_connections"
-      value = "off"
-    }
-    database_flags {
-      name  = "log_disconnections"
-      value = "off"
-    }
-    database_flags {
-      name  = "log_hostname"
-      value = "off"
-    }
-    database_flags {
-      name  = "log_duration"
-      value = "off"
-    }
-    database_flags {
-      name  = "log_min_error_statement"
-      value = "error"
     }
   }
 

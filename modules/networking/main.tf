@@ -1,3 +1,11 @@
+resource "google_project_service" "servicenetworking" {
+  project = var.project_id
+  service = "servicenetworking.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy        = true
+}
+
 resource "google_compute_network" "vpc" {
   name                    = "${var.environment}-vpc"
   auto_create_subnetworks = false
@@ -17,11 +25,6 @@ resource "google_service_networking_connection" "private_services" {
   network                 = google_compute_network.vpc.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_services.name]
-
-  #depends_on = [
-  #  google_sql_database_instance.main,
-  #  google_redis_instance.main
-  #]
 }
 
 resource "google_compute_subnetwork" "public" {
@@ -46,6 +49,8 @@ resource "google_compute_subnetwork" "private" {
   network       = google_compute_network.vpc.id
   region        = var.region
   project       = var.project_id
+
+  private_ip_google_access = true
 }
 
 resource "google_compute_router" "router" {

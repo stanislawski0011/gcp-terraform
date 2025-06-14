@@ -1,45 +1,45 @@
 variable "project_id" {
-  description = "The GCP project ID"
-  type        = string
-}
-
-variable "region" {
-  description = "The GCP region to deploy resources"
+  description = "The project ID to deploy to"
   type        = string
 }
 
 variable "environment" {
-  description = "Environment (dev/prod)"
+  description = "Environment name"
+  type        = string
+}
+
+variable "region" {
+  description = "The region to deploy to"
   type        = string
 }
 
 variable "db_instance_name" {
-  description = "Name of the database instance"
-  type        = string
-}
-
-variable "db_tier" {
-  description = "Database instance tier"
+  description = "The name of the database instance"
   type        = string
 }
 
 variable "db_name" {
-  description = "Name of the database to create"
+  description = "The name of the database"
   type        = string
 }
 
 variable "db_user" {
-  description = "Database user name"
+  description = "The database user"
   type        = string
 }
 
 variable "db_password" {
-  description = "Database user password"
+  description = "The database password"
   type        = string
   sensitive   = true
 }
 
+variable "db_tier" {
+  description = "The database instance tier"
+  type        = string
+}
+
 variable "vpc_network_id" {
-  description = "The ID of the VPC network for the database instance"
+  description = "The VPC network ID"
   type        = string
 }

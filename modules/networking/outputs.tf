@@ -22,3 +22,7 @@ output "nat_ip" {
   description = "The IP address of the NAT gateway"
   value       = google_compute_router_nat.nat.nat_ips
 }
+
+output "service_networking_connection" {
+  value = google_service_networking_connection.private_services.id
+}

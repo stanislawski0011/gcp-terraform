@@ -4,12 +4,40 @@ resource "google_compute_network" "vpc" {
   project                 = var.project_id
 }
 
+resource "google_compute_global_address" "private_services" {
+  name          = "${var.environment}-private-services"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.vpc.id
+  project       = var.project_id
+}
+
+resource "google_service_networking_connection" "private_services" {
+  network                 = google_compute_network.vpc.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_services.name]
+
+  #depends_on = [
+  #  google_sql_database_instance.main,
+  #  google_redis_instance.main
+  #]
+}
+
 resource "google_compute_subnetwork" "public" {
   name          = "${var.environment}-public-subnet"
   ip_cidr_range = var.public_subnet_cidr
   network       = google_compute_network.vpc.id
   region        = var.region
   project       = var.project_id
+
+  private_ip_google_access = true
+
+  log_config {
+    aggregation_interval = "INTERVAL_5_SEC"
+    flow_sampling        = 0.5
+    metadata            = "INCLUDE_ALL_METADATA"
+  }
 }
 
 resource "google_compute_subnetwork" "private" {

@@ -7,23 +7,39 @@ resource "google_project_service" "secretmanager" {
   disable_on_destroy         = false
 }
 
+# Enable Service Networking API
+resource "google_project_service" "servicenetworking" {
+  project = var.project_id
+  service = "servicenetworking.googleapis.com"
+
+  disable_dependent_services = false
+  disable_on_destroy        = false
+}
+
+resource "time_sleep" "wait_for_private_services" {
+  depends_on = [google_project_service.servicenetworking]
+  create_duration = "2m"
+}
+
 resource "google_sql_database_instance" "postgres" {
   name             = var.db_instance_name
   database_version = "POSTGRES_15"
   region           = var.region
   project          = var.project_id
 
+  depends_on = [time_sleep.wait_for_private_services]
+
   settings {
     tier = var.db_tier
 
-    availability_type = var.environment == "prod" ? "REGIONAL" : "ZONAL"
+    availability_type = "ZONAL"
 
     backup_configuration {
       enabled                        = true
-      point_in_time_recovery_enabled = true
+      point_in_time_recovery_enabled = false
       start_time                     = "02:00"
       location                       = var.region
-      transaction_log_retention_days = 7
+      transaction_log_retention_days = 1
     }
 
     ip_configuration {
@@ -40,47 +56,39 @@ resource "google_sql_database_instance" "postgres" {
     }
 
     insights_config {
-      query_insights_enabled  = true
+      query_insights_enabled  = false
       query_string_length     = 1024
-      record_application_tags = true
-      record_client_address   = true
+      record_application_tags = false
+      record_client_address   = false
     }
 
     database_flags {
-      name  = "pgaudit.log"
-      value = "all"
-    }
-    database_flags {
-      name  = "pgaudit.role"
-      value = "rdsadmin"
-    }
-    database_flags {
       name  = "log_checkpoints"
-      value = "on"
+      value = "off"
     }
     database_flags {
       name  = "log_lock_waits"
-      value = "on"
+      value = "off"
     }
     database_flags {
       name  = "log_statement"
-      value = "all"
+      value = "none"
     }
     database_flags {
       name  = "log_connections"
-      value = "on"
+      value = "off"
     }
     database_flags {
       name  = "log_disconnections"
-      value = "on"
+      value = "off"
     }
     database_flags {
       name  = "log_hostname"
-      value = "on"
+      value = "off"
     }
     database_flags {
       name  = "log_duration"
-      value = "on"
+      value = "off"
     }
     database_flags {
       name  = "log_min_error_statement"
@@ -88,7 +96,7 @@ resource "google_sql_database_instance" "postgres" {
     }
   }
 
-  deletion_protection = var.environment == "prod" ? true : false
+  deletion_protection = true
 }
 
 resource "google_sql_database" "database" {

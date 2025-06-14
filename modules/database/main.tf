@@ -31,12 +31,15 @@ resource "google_sql_database_instance" "postgres" {
       enabled                        = true
       point_in_time_recovery_enabled = true
       start_time                     = "02:00"
+      location                       = var.region
+      transaction_log_retention_days = 7
     }
 
     ip_configuration {
       ipv4_enabled                                  = true
       private_network                               = var.vpc_network_id
       enable_private_path_for_google_cloud_services = true
+      ssl_mode                                      = "ENCRYPTED_ONLY"
     }
 
     maintenance_window {
@@ -46,14 +49,18 @@ resource "google_sql_database_instance" "postgres" {
     }
 
     insights_config {
-      query_insights_enabled  = false
+      query_insights_enabled  = true
       query_string_length     = 1024
-      record_application_tags = false
-      record_client_address   = false
+      record_application_tags = true
+      record_client_address   = true
     }
   }
 
-  deletion_protection = true
+  deletion_protection = false
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_sql_database" "database" {

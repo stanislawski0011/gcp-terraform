@@ -17,11 +17,13 @@ module "apis" {
 module "networking" {
   source = "../../modules/networking"
 
-  project_id     = var.project_id
-  region         = var.region
-  environment    = var.environment
-  vpc_name       = "${var.environment}-vpc"
-  depends_on     = [module.apis]
+  project_id          = var.project_id
+  region             = var.region
+  environment        = var.environment
+  vpc_cidr           = "10.0.0.0/16"
+  public_subnet_cidr = "10.0.1.0/24"
+  private_subnet_cidr = "10.0.2.0/24"
+  depends_on         = [module.apis]
 }
 
 module "compute" {

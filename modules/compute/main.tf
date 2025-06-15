@@ -35,7 +35,7 @@ resource "google_compute_instance_template" "web_template" {
 
   lifecycle {
     create_before_destroy = true
-    prevent_destroy       = true
+    prevent_destroy       = false
   }
 }
 

@@ -14,18 +14,10 @@ resource "google_project_service" "sql" {
   disable_on_destroy        = true
 }
 
-resource "google_project_service" "storage" {
-  project = var.project_id
-  service = "storage.googleapis.com"
-
-  disable_dependent_services = false
-  disable_on_destroy        = true
-}
-
 resource "google_project_service" "servicenetworking" {
   project = var.project_id
   service = "servicenetworking.googleapis.com"
 
-  disable_dependent_services = false
+  disable_dependent_services = true
   disable_on_destroy        = true
 }

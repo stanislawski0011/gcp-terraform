@@ -35,6 +35,7 @@ module "compute" {
   machine_type   = var.machine_type
   instance_count = var.instance_count
   subnet_id      = module.networking.public_subnet_id
+  depends_on     = [module.apis, module.networking]
 }
 
 module "database" {
@@ -47,10 +48,10 @@ module "database" {
   db_name          = var.db_name
   db_user          = var.db_user
   db_password      = var.db_password
-  db_tier          = var.db_tier
+  db_tier          = "db-f1-micro"
   vpc_network_id   = module.networking.vpc_id
 
-  depends_on = [module.networking]
+  depends_on = [module.apis]
 }
 
 module "storage" {
@@ -66,7 +67,8 @@ module "storage" {
 module "loadbalancer" {
   source = "../../modules/loadbalancer"
 
-  project_id        = var.project_id
-  environment       = var.environment
+  project_id     = var.project_id
+  environment    = var.environment
   instance_group_id = module.compute.instance_group_id
+  depends_on     = [module.apis, module.compute]
 }

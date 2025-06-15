@@ -2,17 +2,17 @@ resource "google_project_service" "secretmanager" {
   project = var.project_id
   service = "secretmanager.googleapis.com"
 
-  disable_dependent_services = false
+  disable_dependent_services = true
   disable_on_destroy         = false
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
 resource "google_sql_database_instance" "postgres" {
   name             = var.db_instance_name
-  database_version = "POSTGRES_16"
+  database_version = "POSTGRES_14"
   region           = var.region
   project          = var.project_id
 
@@ -118,7 +118,7 @@ resource "google_sql_database_instance" "postgres" {
   deletion_protection = false
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 

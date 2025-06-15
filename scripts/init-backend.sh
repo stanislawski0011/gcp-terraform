@@ -26,5 +26,16 @@ gcloud storage buckets add-iam-policy-binding gs://${BUCKET_NAME} \
     --member="user:${CURRENT_USER}" \
     --role="roles/storage.admin"
 
+# Generate backend.tf configuration
+cat > environments/dev/backend.tf << EOF
+terraform {
+  backend "gcs" {
+    bucket = "${BUCKET_NAME}"
+    prefix = "terraform.tfstate"
+  }
+}
+EOF
+
 echo "Created GCS bucket ${BUCKET_NAME} for Terraform state"
 echo "Granted storage permissions to ${CURRENT_USER}"
+echo "Generated backend.tf configuration"

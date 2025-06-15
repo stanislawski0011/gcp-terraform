@@ -8,7 +8,7 @@ resource "google_storage_bucket" "web_storage" {
   public_access_prevention    = "enforced"
 
   versioning {
-    enabled = false # Disabled to save costs
+    enabled = true
   }
 
   lifecycle_rule {

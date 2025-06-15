@@ -1,4 +1,3 @@
-# Enable Secret Manager API
 resource "google_project_service" "secretmanager" {
   project = var.project_id
   service = "secretmanager.googleapis.com"
@@ -7,7 +6,6 @@ resource "google_project_service" "secretmanager" {
   disable_on_destroy         = false
 }
 
-# Enable Service Networking API
 resource "google_project_service" "servicenetworking" {
   project = var.project_id
   service = "servicenetworking.googleapis.com"

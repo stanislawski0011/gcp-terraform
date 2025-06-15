@@ -15,8 +15,4 @@ terraform {
       version = "~> 0.9.0"
     }
   }
-
-  backend "gcs" {
-    # This will be configured per environment
-  }
 }

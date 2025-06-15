@@ -3,7 +3,7 @@ resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 
   disable_dependent_services = false
-  disable_on_destroy        = false
+  disable_on_destroy        = true
 }
 
 resource "google_project_service" "sql" {
@@ -11,7 +11,7 @@ resource "google_project_service" "sql" {
   service = "sqladmin.googleapis.com"
 
   disable_dependent_services = false
-  disable_on_destroy        = false
+  disable_on_destroy        = true
 }
 
 resource "google_project_service" "storage" {
@@ -19,7 +19,7 @@ resource "google_project_service" "storage" {
   service = "storage.googleapis.com"
 
   disable_dependent_services = false
-  disable_on_destroy        = false
+  disable_on_destroy        = true
 }
 
 resource "google_project_service" "servicenetworking" {
@@ -27,5 +27,5 @@ resource "google_project_service" "servicenetworking" {
   service = "servicenetworking.googleapis.com"
 
   disable_dependent_services = false
-  disable_on_destroy        = false
+  disable_on_destroy        = true
 }

@@ -106,12 +106,6 @@ The Terraform state is stored in a Google Cloud Storage bucket with the followin
 - Uniform bucket-level access for security
 - State file path: `gs://terraform-state-<project-id>/dev/terraform.tfstate`
 
-## Security Considerations
-
-- All sensitive data is stored in Google Secret Manager
-- Network security is implemented using VPC and firewall rules
-- SSL/TLS encryption is enabled for all external communications
-- IAM roles follow the principle of least privilege
 
 ## Maintenance
 

@@ -8,12 +8,12 @@ resource "google_storage_bucket" "web_storage" {
   public_access_prevention    = "enforced"
 
   versioning {
-    enabled = false  # Disabled to save costs
+    enabled = false # Disabled to save costs
   }
 
   lifecycle_rule {
     condition {
-      age = 1  # Delete objects after 1 day to save costs
+      age = 1 # Delete objects after 1 day to save costs
     }
     action {
       type = "Delete"

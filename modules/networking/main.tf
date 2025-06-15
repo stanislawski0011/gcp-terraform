@@ -3,7 +3,7 @@ resource "google_project_service" "servicenetworking" {
   service = "servicenetworking.googleapis.com"
 
   disable_dependent_services = true
-  disable_on_destroy        = true
+  disable_on_destroy         = true
 }
 
 resource "google_compute_network" "vpc" {
@@ -39,7 +39,7 @@ resource "google_compute_subnetwork" "public" {
   log_config {
     aggregation_interval = "INTERVAL_5_SEC"
     flow_sampling        = 0.5
-    metadata            = "INCLUDE_ALL_METADATA"
+    metadata             = "INCLUDE_ALL_METADATA"
   }
 }
 

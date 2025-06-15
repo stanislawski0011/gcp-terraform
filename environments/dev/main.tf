@@ -13,9 +13,9 @@ module "networking" {
 
   project_id          = var.project_id
   environment         = var.environment
-  region             = var.region
-  vpc_cidr           = var.vpc_cidr
-  public_subnet_cidr = var.public_subnet_cidr
+  region              = var.region
+  vpc_cidr            = var.vpc_cidr
+  public_subnet_cidr  = var.public_subnet_cidr
   private_subnet_cidr = var.private_subnet_cidr
 }
 
@@ -33,15 +33,15 @@ module "compute" {
 module "database" {
   source = "../../modules/database"
 
-  project_id      = var.project_id
-  environment     = var.environment
-  region         = var.region
+  project_id       = var.project_id
+  environment      = var.environment
+  region           = var.region
   db_instance_name = var.db_instance_name
-  db_name        = var.db_name
-  db_user        = var.db_user
-  db_password    = var.db_password
-  db_tier        = var.db_tier
-  vpc_network_id = module.networking.vpc_id
+  db_name          = var.db_name
+  db_user          = var.db_user
+  db_password      = var.db_password
+  db_tier          = var.db_tier
+  vpc_network_id   = module.networking.vpc_id
 
   depends_on = [module.networking]
 }

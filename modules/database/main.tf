@@ -12,7 +12,7 @@ resource "google_project_service" "secretmanager" {
 
 resource "google_sql_database_instance" "postgres" {
   name             = var.db_instance_name
-  database_version = "POSTGRES_15"
+  database_version = "POSTGRES_16"
   region           = var.region
   project          = var.project_id
 
@@ -67,6 +67,51 @@ resource "google_sql_database_instance" "postgres" {
 
     database_flags {
       name  = "log_hostname"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_checkpoints"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_disconnections"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_lock_waits"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_statement"
+      value = "all"
+    }
+
+    database_flags {
+      name  = "pgaudit.log"
+      value = "all"
+    }
+
+    database_flags {
+      name  = "pgaudit.log_catalog"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "pgaudit.log_parameter"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "pgaudit.log_relation"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "pgaudit.log_statement_once"
       value = "on"
     }
   }

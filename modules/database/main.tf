@@ -48,6 +48,11 @@ resource "google_sql_database_instance" "postgres" {
       record_application_tags = true
       record_client_address   = true
     }
+
+    database_flags {
+      name  = "log_duration"
+      value = "on"
+    }
   }
 
   deletion_protection = false

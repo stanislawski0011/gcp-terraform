@@ -57,19 +57,29 @@ This repository contains Terraform code to provision a scalable and highly avail
    tfenv install
    ```
 
-3. Initialize the Terraform state backend:
+3. Configure your GCP credentials and project:
+   ```bash
+   # Login to GCP first
+   gcloud auth application-default login
+
+   # List available projects
+   gcloud projects list
+
+   # Set your project
+   gcloud config set project <your-project-id>
+
+   # Verify the project is set
+   gcloud config get-value project
+   ```
+
+4. Initialize the Terraform state backend:
    ```bash
    ./scripts/init-backend.sh <your-project-id>
    ```
 
-4. Initialize Terraform:
+5. Initialize Terraform:
    ```bash
-   terraform init
-   ```
-
-5. Configure your GCP credentials:
-   ```bash
-   gcloud auth application-default login
+   cd environments/dev && terraform init
    ```
 
 6. Create a `terraform.tfvars` file with your configuration:
@@ -96,12 +106,6 @@ The Terraform state is stored in a Google Cloud Storage bucket with the followin
 - Uniform bucket-level access for security
 - State file path: `gs://terraform-state-<project-id>/dev/terraform.tfstate`
 
-## Security Considerations
-
-- All sensitive data is stored in Google Secret Manager
-- Network security is implemented using VPC and firewall rules
-- SSL/TLS encryption is enabled for all external communications
-- IAM roles follow the principle of least privilege
 
 ## Maintenance
 

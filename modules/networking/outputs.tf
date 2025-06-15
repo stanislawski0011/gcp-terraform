@@ -26,3 +26,7 @@ output "nat_ip" {
 output "service_networking_connection" {
   value = google_service_networking_connection.private_services.id
 }
+
+output "private_services_connection" {
+  value = google_service_networking_connection.private_services
+}

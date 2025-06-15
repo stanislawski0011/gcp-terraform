@@ -8,15 +8,22 @@ provider "google-beta" {
   region  = var.region
 }
 
+module "apis" {
+  source = "../../modules/apis"
+
+  project_id = var.project_id
+}
+
 module "networking" {
   source = "../../modules/networking"
 
   project_id          = var.project_id
-  environment         = var.environment
   region              = var.region
-  vpc_cidr            = var.vpc_cidr
-  public_subnet_cidr  = var.public_subnet_cidr
-  private_subnet_cidr = var.private_subnet_cidr
+  environment         = var.environment
+  vpc_cidr            = "10.0.0.0/16"
+  public_subnet_cidr  = "10.0.1.0/24"
+  private_subnet_cidr = "10.0.2.0/24"
+  depends_on          = [module.apis]
 }
 
 module "compute" {
@@ -28,22 +35,24 @@ module "compute" {
   machine_type   = var.machine_type
   instance_count = var.instance_count
   subnet_id      = module.networking.public_subnet_id
+  depends_on     = [module.apis, module.networking]
 }
 
 module "database" {
   source = "../../modules/database"
 
-  project_id       = var.project_id
-  environment      = var.environment
-  region           = var.region
-  db_instance_name = var.db_instance_name
-  db_name          = var.db_name
-  db_user          = var.db_user
-  db_password      = var.db_password
-  db_tier          = var.db_tier
-  vpc_network_id   = module.networking.vpc_id
+  project_id                    = var.project_id
+  environment                   = var.environment
+  region                        = var.region
+  db_instance_name              = var.db_instance_name
+  db_name                       = var.db_name
+  db_user                       = var.db_user
+  db_password                   = var.db_password
+  db_tier                       = "db-f1-micro"
+  vpc_network_id                = module.networking.vpc_id
+  service_networking_connection = module.networking.private_services_connection
 
-  depends_on = [module.networking]
+  depends_on = [module.apis, module.networking]
 }
 
 module "storage" {
@@ -62,4 +71,5 @@ module "loadbalancer" {
   project_id        = var.project_id
   environment       = var.environment
   instance_group_id = module.compute.instance_group_id
+  depends_on        = [module.apis, module.compute]
 }

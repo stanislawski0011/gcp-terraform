@@ -2,8 +2,8 @@ resource "google_project_service" "servicenetworking" {
   project = var.project_id
   service = "servicenetworking.googleapis.com"
 
-  disable_dependent_services = true
-  disable_on_destroy         = true
+  disable_dependent_services = false
+  disable_on_destroy         = false
 }
 
 resource "google_compute_network" "vpc" {
@@ -25,6 +25,7 @@ resource "google_service_networking_connection" "private_services" {
   network                 = google_compute_network.vpc.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_services.name]
+  deletion_policy         = "ABANDON"
 }
 
 resource "google_compute_subnetwork" "public" {

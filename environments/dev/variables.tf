@@ -82,3 +82,9 @@ variable "service_account_email" {
   description = "Email of the service account that will write to the bucket"
   type        = string
 }
+
+variable "terraform_state_bucket" {
+  description = "The name of the GCS bucket for Terraform state"
+  type        = string
+  default     = "terraform-state-dev-0"
+}

@@ -11,6 +11,8 @@ resource "google_project_service" "secretmanager" {
 }
 
 resource "google_sql_database_instance" "postgres" {
+  depends_on = [var.service_networking_connection]
+
   name             = var.db_instance_name
   database_version = "POSTGRES_14"
   region           = var.region

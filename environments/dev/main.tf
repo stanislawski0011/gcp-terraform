@@ -50,8 +50,9 @@ module "database" {
   db_password      = var.db_password
   db_tier          = "db-f1-micro"
   vpc_network_id   = module.networking.vpc_id
+  service_networking_connection = module.networking.private_services_connection
 
-  depends_on = [module.apis]
+  depends_on = [module.apis, module.networking]
 }
 
 module "storage" {

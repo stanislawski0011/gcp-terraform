@@ -43,3 +43,8 @@ variable "vpc_network_id" {
   description = "The VPC network ID"
   type        = string
 }
+
+variable "service_networking_connection" {
+  description = "The service networking connection resource"
+  type        = any
+}

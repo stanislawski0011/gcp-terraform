@@ -8,15 +8,20 @@ provider "google-beta" {
   region  = var.region
 }
 
+module "apis" {
+  source = "../../modules/apis"
+
+  project_id = var.project_id
+}
+
 module "networking" {
   source = "../../modules/networking"
 
-  project_id          = var.project_id
-  environment         = var.environment
-  region              = var.region
-  vpc_cidr            = var.vpc_cidr
-  public_subnet_cidr  = var.public_subnet_cidr
-  private_subnet_cidr = var.private_subnet_cidr
+  project_id     = var.project_id
+  region         = var.region
+  environment    = var.environment
+  vpc_name       = "${var.environment}-vpc"
+  depends_on     = [module.apis]
 }
 
 module "compute" {

@@ -57,9 +57,19 @@ This repository contains Terraform code to provision a scalable and highly avail
    tfenv install
    ```
 
-3. Configure your GCP credentials:
+3. Configure your GCP credentials and project:
    ```bash
+   # Login to GCP first
    gcloud auth application-default login
+
+   # List available projects
+   gcloud projects list
+
+   # Set your project
+   gcloud config set project <your-project-id>
+
+   # Verify the project is set
+   gcloud config get-value project
    ```
 
 4. Initialize the Terraform state backend:
@@ -69,7 +79,7 @@ This repository contains Terraform code to provision a scalable and highly avail
 
 5. Initialize Terraform:
    ```bash
-   terraform init
+   cd environments/dev && terraform init
    ```
 
 6. Create a `terraform.tfvars` file with your configuration:

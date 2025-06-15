@@ -34,6 +34,7 @@ resource "google_sql_database_instance" "postgres" {
       private_network                               = var.vpc_network_id
       enable_private_path_for_google_cloud_services = true
       ssl_mode                                      = "ENCRYPTED_ONLY"
+      require_ssl                                   = true
     }
 
     maintenance_window {

@@ -11,6 +11,10 @@ resource "google_storage_bucket" "web_storage" {
     enabled = true
   }
 
+  logging {
+    log_bucket = "${var.bucket_name}-logs"
+  }
+
   lifecycle_rule {
     condition {
       age = 1 # Delete objects after 1 day to save costs
@@ -19,6 +23,16 @@ resource "google_storage_bucket" "web_storage" {
       type = "Delete"
     }
   }
+}
+
+resource "google_storage_bucket" "logs" {
+  name          = "${var.bucket_name}-logs"
+  location      = var.region
+  project       = var.project_id
+  force_destroy = var.environment != "prod"
+
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
 }
 
 resource "google_storage_bucket_iam_member" "service_account_access" {

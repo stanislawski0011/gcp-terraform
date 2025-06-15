@@ -64,6 +64,11 @@ resource "google_sql_database_instance" "postgres" {
       name  = "log_min_error_statement"
       value = "error"
     }
+
+    database_flags {
+      name  = "log_hostname"
+      value = "on"
+    }
   }
 
   deletion_protection = false

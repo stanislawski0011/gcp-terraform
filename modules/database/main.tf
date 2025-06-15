@@ -53,6 +53,11 @@ resource "google_sql_database_instance" "postgres" {
       name  = "log_duration"
       value = "on"
     }
+
+    database_flags {
+      name  = "log_connections"
+      value = "on"
+    }
   }
 
   deletion_protection = false
